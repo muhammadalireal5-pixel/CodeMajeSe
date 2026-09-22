@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, JetBrains_Mono, Pixelify_Sans, Inter } from "next/font/google";
+import { Geist, Geist_Mono, JetBrains_Mono, Jersey_10, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import Provider from "./provider";
+
 
 const jetbrainsMono = JetBrains_Mono({subsets:['latin'],variable:'--font-mono'});
 
@@ -15,9 +17,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const gameFont = Pixelify_Sans({
+const gameFont = Jersey_10({
   subsets: ['latin'],
   variable: "--font-game",
+  weight: ['400']
 })
 
 const inter = Inter({
@@ -33,10 +36,21 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
+      suppressHydrationWarning
       lang="en"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-mono", jetbrainsMono.variable, gameFont.variable, inter.variable)  }
+      className={cn("h-full", "antialiased","dark", geistSans.variable, geistMono.variable, "font-mono", jetbrainsMono.variable, gameFont.variable, inter.variable)  }
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Provider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          enableColorScheme={false}
+          disableTransitionOnChange
+        >
+          {children}
+        </Provider>
+      </body>
     </html>
   );
 }
